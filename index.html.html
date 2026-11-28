@@ -1,0 +1,973 @@
+<!doctype html><html lang="en"><meta charset="utf-8"><meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'none'; form-action 'none'; base-uri 'none'"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Money Across Life | Personal Finance Lab</title><style>
+
+:root{color-scheme:light;--paper:#f5f7fb;--card:#ffffff;--ink:#172b43;--soft:#4c6078;--line:#dbe5f0;--green:#214e83;--mint:#e8f1fc;--warm:#fff2d5;--serif:Georgia,'Times New Roman',serif}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.5 system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif}
+header{background:#142c43;color:#ffffff;padding:clamp(34px,6vw,76px) max(20px,calc((100% - 1120px)/2));border-bottom:5px solid #86b9eb}
+h1,h2,.big{font-family:var(--serif);font-weight:500;letter-spacing:-.035em}
+h1{font-size:clamp(40px,7vw,76px);line-height:1;margin:0 0 15px}
+header p{font-size:clamp(15px,2vw,19px);color:#e2efff;margin:0;max-width:43ch}
+main{max-width:1160px;margin:0 auto;padding:24px 20px 0}
+.tabs{display:inline-flex;gap:4px;flex-wrap:wrap;background:#e9eff7;border:1px solid var(--line);border-radius:14px;padding:4px}
+button{cursor:pointer;border:1px solid transparent;border-radius:10px;padding:10px 15px;background:var(--mint);color:#214669;font:inherit;font-size:.88rem;font-weight:700}
+button:hover{background:#d6e7fb}
+.tabs button{background:transparent}
+.tabs button:hover{background:#dbe8f8}
+.tabs .active,.tabs .active:hover{color:#ffffff;background:var(--green)}
+.grid{display:grid;grid-template-columns:minmax(0,1.12fr) minmax(0,1fr);gap:24px;margin-top:22px;align-items:start}
+section{min-width:0;background:var(--card);border:1px solid var(--line);border-radius:20px;padding:clamp(16px,3vw,28px);box-shadow:0 5px 20px #172b430b}
+h2{font-size:clamp(26px,4vw,34px);line-height:1.15;margin:0 0 10px}
+h3{font-size:1rem;margin:16px 0 7px}
+p{margin:8px 0 12px}
+label{display:block;min-width:0;margin:11px 0;font-size:.87rem;font-weight:650}
+input,.smallselect{display:block;width:100%;min-width:0;margin-top:5px;padding:10px 11px;border:1px solid #b9cbe0;background:#fff;color:var(--ink);border-radius:8px;font:inherit}
+:focus-visible{outline:3px solid #3579bb;outline-offset:3px}
+small,.muted,.hint{color:var(--soft);line-height:1.5}
+.hint,small{font-size:.81rem}
+.subhead{margin:18px 0 6px;color:var(--green)}
+.big{font-size:clamp(34px,5vw,54px);line-height:1.1;overflow-wrap:anywhere;font-variant-numeric:tabular-nums;margin:9px 0 4px}
+.summary-hero{background:var(--green);border-radius:14px;padding:20px;color:#ffffff}
+.summary-hero .muted{color:#e5efff}
+.summary-section .row:last-child{border-bottom:0}
+.summary-panel{display:grid;gap:14px;min-width:0}
+.row{display:flex;justify-content:space-between;gap:14px;align-items:baseline;padding:10px 0;border-bottom:1px solid var(--line)}
+.row span:last-child{font-weight:700;text-align:right;font-variant-numeric:tabular-nums}
+.note{background:#eef4fc;border-radius:10px;padding:11px 13px;margin-top:12px;font-size:.83rem;line-height:1.55}
+.warn{background:var(--warm);color:#60451d}
+.hidden,[hidden]{display:none!important}
+.efrow{display:grid;grid-template-columns:70px minmax(0,1fr) max-content;align-items:center;gap:9px;margin:10px 0;font-size:.82rem}
+.eftrack{background:#e4edf8;border-radius:8px;height:11px;overflow:hidden}
+.efbar,.fill{background:#497fb4;height:100%;border-radius:8px}
+.stat{background:#edf4fc;padding:12px;border-radius:12px;margin:12px 0}
+.stat strong{display:block;font-size:1.3rem;color:var(--green)}
+.extra-card{border:1px solid var(--line);border-radius:12px;padding:14px;margin:12px 0;background:#f7faff}
+.extra-card .grid2,.grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));column-gap:13px}
+.extra-card label{margin:6px 0}
+.form-group{border-top:1px solid var(--line);margin-top:13px;padding-top:12px}
+.taxdetails{border:1px solid var(--line);border-radius:11px;padding:10px 12px;margin-top:11px;background:#f6f9fd}
+summary{cursor:pointer;font-weight:700;color:var(--green);overflow-wrap:anywhere}
+a{color:#215e9d;text-underline-offset:.18em}
+.footer{font-size:.79rem;line-height:1.6;padding:20px 0 32px;color:var(--soft)}
+#taxConfidence{margin-bottom:8px}
+#taxJump{margin:5px 0}
+[id]{scroll-margin-block:20px}
+@media(max-width:760px){.grid{grid-template-columns:minmax(0,1fr);gap:14px}.summary-panel{grid-row:1}.tabs{display:flex}}
+@media(max-width:460px){.grid2,.extra-card .grid2{grid-template-columns:minmax(0,1fr)}main{padding-inline:12px}.tabs button{flex:1}header{padding-inline:20px}.row{font-size:.88rem}}
+.comparison{width:100%;border-collapse:collapse;font-size:.83rem;font-variant-numeric:tabular-nums}
+.comparison th,.comparison td{padding:8px 4px;border-bottom:1px solid var(--line);text-align:right;overflow-wrap:anywhere}
+.comparison th:first-child,.comparison td:first-child{text-align:left}
+.table-scroll{overflow-x:auto}.scenario-chart{display:block;width:100%;height:auto;margin:12px 0}
+.chart-key{display:flex;flex-wrap:wrap;gap:8px 16px;font-size:.82rem}.stress-key{color:#385e8e}
+.property-card{margin:12px 0}.property-card h4{margin:0 0 6px}
+#ssGuide{margin-bottom:12px}
+</style><header><h1>Money Across Life</h1><p>Build a monthly spending plan or see how much you’ll need in retirement.</p></header><main><div class="tabs"><button id="youngTab" class="active">🎓 MBA &amp; early career</button><button id="retTab">🏡 Approaching retirement</button></div><div id="young" class="grid"><section><h2>Monthly inputs</h2><small>Start with your income, then add expenses, debt payments and savings.</small>
+<div class="form-group"><h3>Income and taxes</h3>
+<label>Pay input method<select class="smallselect" id="payMode"><option value="gross">Gross-pay tax estimator</option><option value="actual">Actual monthly take-home pay</option></select></label>
+<div id="actualInputs" hidden>
+<label>Recurring monthly take-home including any net recurring side income ($)<input id="actualNet" type="number" min="0" step="0.01" placeholder="Enter household take-home"></label>
+<label>One-time cash received this month ($)<input id="actualOnce" type="number" min="0" step="0.01" value="0"></label>
+<div class="grid2"><label>Monthly reserve for recurring income taxes still owed ($)<input id="actualReserve" type="number" min="0" step="0.01" value="0"></label>
+<label>Additional reserve for one-time cash ($)<input id="onceReserve" type="number" min="0" step="0.01" value="0"></label></div>
+<p class="hint">Use amounts after any withholding and payroll deductions. Reserve only tax you still expect to owe. Include each cash source once.</p>
+<div class="grid2"><label>Primary monthly eligible gross pay for match ($)<input id="actualEligible" type="number" min="0" value="0"></label>
+<label>Primary employee 401(k) already deducted ($/month)<input id="actualDeferral" type="number" min="0" value="0"></label></div>
+<p class="hint">These match inputs do not change take-home. For a 401(k) what-if, update take-home with the new net amount from your payroll estimate.</p>
+</div><div id="grossInputs">
+<label>Annual gross salary ($)<input id="salary" type="number" min="0" value="90000"></label>
+<label>Additional gross bonus THIS month ($)<input id="bonus" type="number" min="0" value="0"></label>
+<label>401(k) employee contribution (% of gross salary + bonus)<input id="kpercent" type="number" min="0" max="100" step="0.5" value="5"></label>
+<small>Choose traditional or Roth treatment below. Employer matching is entered separately.</small>
+<div class="grid2"><label>Tax year<select class="smallselect" id="taxyear"><option value="2026">2026 (published federal rules)</option><option value="2027">2027 (published federal rules)</option><option value="2028">2028 (projection using 2027 federal rules)</option><option value="2029">2029 (projection using 2027 federal rules)</option><option value="2030">2030 (projection using 2027 federal rules)</option><option value="2031">2031 (projection using 2027 federal rules)</option><option value="2032">2032 (projection using 2027 federal rules)</option><option value="2033">2033 (projection using 2027 federal rules)</option><option value="2034">2034 (projection using 2027 federal rules)</option><option value="2035">2035 (projection using 2027 federal rules)</option></select></label><label>Filing status<select class="smallselect" id="filing"><option value="single">Single</option><option value="joint">Married filing jointly</option><option value="head">Head of household</option><option value="separate">Married filing separately</option></select></label></div>
+<div id="spouseSection" class="stat hidden" ><strong>Spouse's income — joint tax return</strong><p class="hint">Enter your spouse's income separately. Federal income tax will be calculated on your combined taxable income. Household take-home includes both paychecks.</p><div class="grid2"><label>Spouse annual gross salary ($)<input id="spouseSalary" type="number" min="0" value="0"></label><label>Spouse additional gross bonus this month ($)<input id="spouseBonus" type="number" min="0" value="0"></label></div><div class="grid2"><label>Spouse 401(k) contribution (% of gross pay)<input id="spouseK" type="number" min="0" max="100" step="0.5" value="0"></label><label>Spouse 401(k) type<select id="spouseKType"><option value="traditional">Traditional (pre-tax)</option><option value="roth">Roth (after-tax)</option></select></label></div><label>State where spouse physically works<select id="spouseWork"><option value="same">Same as household residence</option><option value="Alabama">Alabama</option><option value="Alaska">Alaska</option><option value="Arizona">Arizona</option><option value="Arkansas">Arkansas</option><option value="California">California</option><option value="Colorado">Colorado</option><option value="Connecticut">Connecticut</option><option value="Delaware">Delaware</option><option value="Florida">Florida</option><option value="Georgia">Georgia</option><option value="Hawaii">Hawaii</option><option value="Idaho">Idaho</option><option value="Illinois">Illinois</option><option value="Indiana">Indiana</option><option value="Iowa">Iowa</option><option value="Kansas">Kansas</option><option value="Kentucky">Kentucky</option><option value="Louisiana">Louisiana</option><option value="Maine">Maine</option><option value="Maryland">Maryland</option><option value="Massachusetts">Massachusetts</option><option value="Michigan">Michigan</option><option value="Minnesota">Minnesota</option><option value="Mississippi">Mississippi</option><option value="Missouri">Missouri</option><option value="Montana">Montana</option><option value="Nebraska">Nebraska</option><option value="Nevada">Nevada</option><option value="New Hampshire">New Hampshire</option><option value="New Jersey">New Jersey</option><option value="New Mexico">New Mexico</option><option value="New York">New York</option><option value="North Carolina">North Carolina</option><option value="North Dakota">North Dakota</option><option value="Ohio">Ohio</option><option value="Oklahoma">Oklahoma</option><option value="Oregon">Oregon</option><option value="Pennsylvania">Pennsylvania</option><option value="Rhode Island">Rhode Island</option><option value="South Carolina">South Carolina</option><option value="South Dakota">South Dakota</option><option value="Tennessee">Tennessee</option><option value="Texas">Texas</option><option value="Utah">Utah</option><option value="Vermont">Vermont</option><option value="Virginia">Virginia</option><option value="Washington">Washington</option><option value="West Virginia">West Virginia</option><option value="Wisconsin">Wisconsin</option><option value="Wyoming">Wyoming</option><option value="District of Columbia">District of Columbia</option></select></label><p class="hint">If filing jointly, enter combined itemized deductions and tax credits above. Add your spouse's other income using “Add income source.” Multistate tax sourcing remains approximate.</p></div>
+<div class="grid2"><label>State of residence (50 states + DC)<select class="smallselect" id="state"><option value="Alabama" >Alabama</option><option value="Alaska" >Alaska</option><option value="Arizona" >Arizona</option><option value="Arkansas" >Arkansas</option><option value="California" >California</option><option value="Colorado" >Colorado</option><option value="Connecticut" >Connecticut</option><option value="Delaware" >Delaware</option><option value="Florida" >Florida</option><option value="Georgia" >Georgia</option><option value="Hawaii" >Hawaii</option><option value="Idaho" >Idaho</option><option value="Illinois" selected>Illinois</option><option value="Indiana" >Indiana</option><option value="Iowa" >Iowa</option><option value="Kansas" >Kansas</option><option value="Kentucky" >Kentucky</option><option value="Louisiana" >Louisiana</option><option value="Maine" >Maine</option><option value="Maryland" >Maryland</option><option value="Massachusetts" >Massachusetts</option><option value="Michigan" >Michigan</option><option value="Minnesota" >Minnesota</option><option value="Mississippi" >Mississippi</option><option value="Missouri" >Missouri</option><option value="Montana" >Montana</option><option value="Nebraska" >Nebraska</option><option value="Nevada" >Nevada</option><option value="New Hampshire" >New Hampshire</option><option value="New Jersey" >New Jersey</option><option value="New Mexico" >New Mexico</option><option value="New York" >New York</option><option value="North Carolina" >North Carolina</option><option value="North Dakota" >North Dakota</option><option value="Ohio" >Ohio</option><option value="Oklahoma" >Oklahoma</option><option value="Oregon" >Oregon</option><option value="Pennsylvania" >Pennsylvania</option><option value="Rhode Island" >Rhode Island</option><option value="South Carolina" >South Carolina</option><option value="South Dakota" >South Dakota</option><option value="Tennessee" >Tennessee</option><option value="Texas" >Texas</option><option value="Utah" >Utah</option><option value="Vermont" >Vermont</option><option value="Virginia" >Virginia</option><option value="Washington" >Washington</option><option value="West Virginia" >West Virginia</option><option value="Wisconsin" >Wisconsin</option><option value="Wyoming" >Wyoming</option><option value="District of Columbia">District of Columbia</option></select></label><div class="stat"><strong style="font-size:16px">Estimated income tax rates</strong><div class="row"><span>Federal effective</span><span id="fedRate">—</span></div><div class="row"><span>State effective</span><span id="stateRateDisplay">—</span></div><div class="row"><span><b>Blended federal + state</b></span><span id="blendedRate">—</span></div><div class="hint">Effective rates = estimated annual tax ÷ annual income. Rates update with salary, filing status, residence, work state, and other income. Payroll taxes are shown separately below. State estimates are illustrative, not verified tax returns.</div></div></div>
+<label>State where salary work is physically performed<select class="smallselect" id="workstate"><option value="same">Same as residence</option><option value="Alabama">Alabama</option><option value="Alaska">Alaska</option><option value="Arizona">Arizona</option><option value="Arkansas">Arkansas</option><option value="California">California</option><option value="Colorado">Colorado</option><option value="Connecticut">Connecticut</option><option value="Delaware">Delaware</option><option value="Florida">Florida</option><option value="Georgia">Georgia</option><option value="Hawaii">Hawaii</option><option value="Idaho">Idaho</option><option value="Illinois">Illinois</option><option value="Indiana">Indiana</option><option value="Iowa">Iowa</option><option value="Kansas">Kansas</option><option value="Kentucky">Kentucky</option><option value="Louisiana">Louisiana</option><option value="Maine">Maine</option><option value="Maryland">Maryland</option><option value="Massachusetts">Massachusetts</option><option value="Michigan">Michigan</option><option value="Minnesota">Minnesota</option><option value="Mississippi">Mississippi</option><option value="Missouri">Missouri</option><option value="Montana">Montana</option><option value="Nebraska">Nebraska</option><option value="Nevada">Nevada</option><option value="New Hampshire">New Hampshire</option><option value="New Jersey">New Jersey</option><option value="New Mexico">New Mexico</option><option value="New York">New York</option><option value="North Carolina">North Carolina</option><option value="North Dakota">North Dakota</option><option value="Ohio">Ohio</option><option value="Oklahoma">Oklahoma</option><option value="Oregon">Oregon</option><option value="Pennsylvania">Pennsylvania</option><option value="Rhode Island">Rhode Island</option><option value="South Carolina">South Carolina</option><option value="South Dakota">South Dakota</option><option value="Tennessee">Tennessee</option><option value="Texas">Texas</option><option value="Utah">Utah</option><option value="Vermont">Vermont</option><option value="Virginia">Virginia</option><option value="Washington">Washington</option><option value="West Virginia">West Virginia</option><option value="Wisconsin">Wisconsin</option><option value="Wyoming">Wyoming</option><option value="District of Columbia">District of Columbia</option></select></label>
+<div class="grid2"><label>401(k) tax treatment<select id="kType" class="smallselect"><option value="traditional">Traditional (pre-tax)</option><option value="roth">Roth (after-tax)</option></select></label><label>Deduction type<select id="deduction" class="smallselect"><option value="standard">Standard deduction</option><option value="itemized">Itemized deductions</option></select></label></div>
+<label id="itemizedWrap" class="hidden">Estimated annual itemized deductions ($)<input id="itemized" type="number" min="0" value="0"></label>
+<label>Verified nonrefundable federal credits other than Child Tax Credit ($)<input id="credits" type="number" min="0" value="0"></label>
+
+<h3 class="subhead">Additional income</h3><p class="hint">Add recurring income or a one-time event this month. Stock sales use proceeds for cash flow and gains for tax. These estimates are simplified and may need professional review.</p>
+<div id="incomeSources"></div><button type="button" id="addIncome">+ Add income source</button>
+<details class="taxdetails" id="taxInputs"><summary>Tax inputs, official worksheets and sources</summary>
+<p class="hint">Amounts are annual in this panel. A blank liability means unknown. Enter 0 only after confirming the tax does not apply. If a jurisdiction is unsupported, enter its official return estimate to unlock the cash plan.</p>
+<div class="grid2">
+<label>State income tax after credits, all returns combined ($)<input id="stateOverride" type="number" step="any" placeholder="Use supported formula if blank"></label>
+<label>Local income tax after credits, all localities ($)<input id="localOverride" type="number" step="any" placeholder="Enter 0 if confirmed none"></label>
+<label>Employee state/local payroll contributions ($)<input id="extraPayroll" type="number" min="0" step="any" placeholder="Enter 0 if confirmed none"></label>
+<label>State additions minus subtractions ($)<input id="stateAdjustment" type="number" step="any" placeholder="Optional"></label>
+<label>Official state deduction, NC only ($)<input id="stateDeduction" type="number" min="0" step="any"></label>
+<label>Official state taxable income, WI or NY ($)<input id="stateTaxable" type="number" min="0" step="any"></label>
+<label>New York adjusted gross income from state worksheet ($)<input id="nyAgi" type="number" step="any"></label>
+<label>State tax credits ($)<input id="stateCredit" type="number" min="0" step="any" value="0"></label>
+<label>State dependents eligible for exemption<input id="dependents" type="number" min="0" step="1" value="0"></label>
+<label>NYC resident taxable income from city worksheet ($)<input id="nycTaxable" type="number" min="0" step="any"></label>
+<label>Verified NYC credits ($)<input id="localCredit" type="number" min="0" step="any" value="0"></label>
+<label>IL Schedule CR: other state net income tax ($)<input id="otherStateLiability" type="number" min="0" step="any"></label>
+<label>IL Schedule CR: qualifying share of Illinois tax base (%)<input id="scheduleCRShare" type="number" min="0" max="100" step="0.1"></label>
+</div>
+<div class="grid2">
+<label>Qualifying children for federal Child Tax Credit<input id="children" type="number" min="0" step="1" value="0"></label>
+<label>Verified refundable federal credits ($)<input id="refundableCredit" type="number" min="0" step="any" value="0"></label>
+<label>Verified additional federal income taxes, including AMT if due ($)<input id="extraFederalTax" type="number" min="0" step="any" value="0"></label>
+<label>Verified deductions after AGI (e.g. QBI) ($)<input id="otherDeduction" type="number" min="0" step="any" value="0"></label>
+<label>Verified Form 8960 investment deductions ($)<input id="niitDeduction" type="number" min="0" step="any" value="0"></label>
+</div>
+<p class="hint">Child count should include only children who meet Schedule 8812 requirements. Enter allowable itemized deductions and verified credits after applying any limits and phaseouts.</p>
+<div class="grid2">
+<label>Primary age at year-end<input id="taxAge" type="number" min="0" step="1" value="30"></label>
+<label>Primary IRA type<select id="iraType" class="smallselect"><option value="roth">Roth IRA</option><option value="traditional">Traditional IRA</option></select></label>
+<label>Primary annual IRA contribution ($)<input id="iraRequest" type="number" min="0" value="0"></label>
+<label>Primary covered by workplace plan beyond entered deferrals<select id="covered" class="smallselect"><option value="no">No</option><option value="yes">Yes</option></select></label>
+<label>Spouse age at year-end<input id="spouseTaxAge" type="number" min="0" step="1" value="30"></label>
+<label>Spouse IRA type<select id="spouseIraType" class="smallselect"><option value="roth">Roth IRA</option><option value="traditional">Traditional IRA</option></select></label>
+<label>Spouse annual IRA contribution ($)<input id="spouseIraRequest" type="number" min="0" value="0"></label>
+<label>Spouse covered by workplace plan beyond entered deferrals<select id="spouseCovered" class="smallselect"><option value="no">No</option><option value="yes">Yes</option></select></label>
+<label>Separate filer lived apart from spouse all year<select id="livedApart" class="smallselect"><option value="no">No / not applicable</option><option value="yes">Yes</option></select></label>
+<label>Primary's full-year HSA eligibility<select id="hsaCoverage" class="smallselect"><option value="none">Ineligible / none</option><option value="self">Eligible, self-only</option><option value="family">Eligible, family</option></select></label>
+<label>Primary annual HSA employee contribution ($)<input id="hsa" type="number" min="0" value="0"></label>
+<label>Annual employer HSA funding and family limit used by spouse ($)<input id="employerHsa" type="number" min="0" value="0"></label>
+<label>Primary HSA funding method<select id="hsaPayroll" class="smallselect"><option value="no">Direct contribution</option><option value="yes">Pre-tax cafeteria plan payroll deduction</option></select></label>
+</div>
+<p class="hint">Confirm HSA eligibility for all 12 months, including qualifying coverage, other coverage, Medicare and dependency status. Enter only regular 401(k) deferrals here.</p>
+<ul>
+<li><a href="https://www.irs.gov/pub/irs-drop/rp-25-32.pdf">IRS 2026 federal parameters</a> · <a href="https://www.irs.gov/irb/2026-48_irb">IRS 2027 federal parameters</a></li>
+<li><a href="https://www.irs.gov/instructions/i1040sse">Schedule SE</a> · <a href="https://www.irs.gov/instructions/i8959">Form 8959</a> · <a href="https://www.irs.gov/instructions/i8960">Form 8960</a> · <a href="https://www.irs.gov/instructions/i1040s8">Schedule 8812</a></li>
+<li><a href="https://www.ssa.gov/oact/cola/cbb.html">SSA wage bases</a> · <a href="https://www.irs.gov/publications/p590a">IRA eligibility</a> · <a href="https://www.irs.gov/irb/2025-21_IRB">2026 HSA limits</a> · <a href="https://www.irs.gov/pub/irs-drop/rp-26-24.pdf">2027 HSA limits</a></li>
+<li><a href="https://www.irs.gov/businesses/small-businesses-self-employed/state-government-websites">State agency directory</a> · <a href="https://tax.illinois.gov/questionsandanswers/answer.851.html">IL exemptions</a> · <a href="https://tax.illinois.gov/forms/incometax/currentyear/individual/il-1040-schedule-cr-instr.html">IL Schedule CR</a> · <a href="https://www.ncdor.gov/individual-estimated-income-tax/open">NC worksheet</a> · <a href="https://www.revenue.wi.gov/Pages/FAQS/pcs-taxrates.aspx">WI rates</a> · <a href="https://www.tax.ny.gov/pdf/current_forms/it/it2105i.pdf">NYC worksheet</a></li>
+</ul></details>
+<label>One-time tax already included in the annual worksheet inputs ($)<input id="oneTimeOverrideTax" type="number" min="0" step="0.01" value="0"></label>
+<p class="hint">Enter only the portion of your annual worksheet amounts due to one-time income. This moves it from the monthly reserve into this month’s reserve without changing annual tax.</p></div>
+
+</div><details class="form-group"><summary>Fixed bills</summary>
+<label>Rent ($)<input id="rent" type="number" min="0" value="1600"></label>
+<label>Mortgage payment ($, if applicable)<input id="mortgage" type="number" min="0" value="0"></label>
+<label>Car payment ($)<input id="carpayment" type="number" min="0" value="0"></label>
+<label>Car insurance ($)<input id="carinsurance" type="number" min="0" value="120"></label>
+<label>Home / renters insurance ($)<input id="homeinsurance" type="number" min="0" value="25"></label>
+<label>Utilities, internet & phone ($)<input id="utilities" type="number" min="0" value="180"></label>
+<label>Other fixed monthly payments ($)<input id="otherfixed" type="number" min="0" value="0"></label>
+</details><details class="form-group"><summary>Everyday essentials</summary>
+<label>Groceries, transportation, healthcare & other essentials ($)<input id="expenses" type="number" min="0" value="750"></label>
+</details><details class="form-group"><summary>Debt payments</summary>
+<label>Credit card balance ($)<input id="card" type="number" min="0" value="5000"></label><label>Credit card APR (%)<input id="apr" type="number" min="0" max="100" step="0.1" value="24"></label><label>Credit card minimum payment ($)<input id="cardmin" type="number" min="0" value="150"></label><label>Student loan balance ($)<input id="loan" type="number" min="0" value="20000"></label><label>Student loan APR (%)<input id="loanapr" type="number" min="0" max="100" step="0.1" value="6"></label><label>Student loan minimum payment ($)<input id="loanmin" type="number" min="0" value="250"></label>
+<label>APR cutoff for prioritizing debt before full emergency savings (%)<input id="debtCutoff" type="number" min="0" max="100" step="0.1" value="10"></label>
+</details><details class="form-group"><summary>Emergency savings</summary>
+<label>Starter emergency buffer ($)<input id="starter" type="number" min="0" value="1000"></label>
+<label>Current liquid emergency savings ($)<input id="savings" type="number" min="0" value="1000"></label>
+<div id="efChart" aria-live="polite"></div>
+<label>Your emergency fund target ($)<input id="target" type="number" min="0" value="9000"></label><small>Example starting target: $9,000 = 3 months × $3,000 in essential monthly spending. The 3–6 month bars below update from your actual expenses. Change this target to suit your needs.</small>
+<label>Months to reach your target (for suggested savings pace)<input id="timeline" type="number" min="1" max="120" value="12"></label>
+<div class="stat">Suggested monthly emergency-fund saving<strong id="suggested">—</strong><span class="hint">Target gap divided by months remaining. Feasibility depends on available cash.</span></div>
+</details><details class="form-group"><summary>Employer match</summary>
+<label>Employer 401(k) match rate (% of eligible pay, optional)<input id="employerpct" type="number" min="0" max="100" step="0.5" value="0"></label>
+<small>Optional rough estimate only: assumes the employer matches your contribution dollar-for-dollar up to this percentage of pay. Actual formulas and vesting vary. The estimate covers the primary employee only. Enter the cap for your employer’s eligible pay.</small></details></section><div class="summary-panel"><section class="summary-section"><h2>Your monthly plan</h2><div class="summary-hero"><div class="muted">This-month surplus</div><div id="available" class="big" aria-live="polite">—</div>
+<div class="muted">Typical-month surplus <strong id="typicalAvailable">—</strong></div></div><div id="taxConfidence" class="note warn"></div><button id="taxJump" type="button">Open tax inputs</button><div id="budgetSummary" class="hint"></div><div id="alloc"></div><details><summary>Typical-month allocations</summary><div id="typicalAlloc"></div></details><div id="youngNote" class="note"></div></section><section><h2>Debt payoff</h2><div id="debtProjection"></div></section>
+<section><h2>What-if comparison</h2><p class="hint">Save the current plan, then change inputs. Your baseline lasts until this page is reloaded.</p>
+<button id="saveBaseline" type="button">Save baseline</button> <button id="clearBaseline" type="button" hidden>Clear baseline</button><div id="comparison" aria-live="polite"></div></section>
+<section><h2>Take-home and taxes</h2><div class="stat">Take-home this month after reserves<strong id="takehome">—</strong>Typical-month take-home after reserves <strong id="typicalTakehome">—</strong><span id="taxbreak" class="hint"></span></div><details id="annualDetails" class="taxdetails"><summary>Annual tax calculation</summary><div id="annualBreak"></div></details></section></div></div><div id="ret" class="grid hidden"><section><h2>Retirement inputs</h2><small>Work backwards from your desired spending, as in Lecture 7B.</small><label>Current age<input id="age" type="number" min="18" max="100" value="55"></label><label>Planned retirement age<input id="retage" type="number" min="19" max="100" value="65"></label><label>Plan through age<input id="endage" type="number" min="19" max="120" value="95"></label><label>How to enter retirement savings<select id="assetMode" class="smallselect"><option value="total">One total balance</option><option value="accounts">Break down by account</option></select></label>
+<div id="assetTotal"><label>Current retirement investments ($)<input id="wealth" type="number" min="0" value="800000"></label>
+<label>Annual contributions ($, end of year)<input id="contrib" type="number" min="0" value="20000"></label></div>
+<div id="assetAccounts" hidden>
+<p class="hint">Enter balances and annual contributions earmarked for retirement. Use the retirement tax field for an estimate of taxes on withdrawals. Account types do not drive withdrawal order or tax calculations.</p>
+<div id="accountFields"></div>
+<label>Annual cash return before retirement (%)<input id="cashReturn" type="number" min="-50" max="50" step="0.1" value="2"></label>
+<p class="hint">Cash uses its own return before retirement. The model pools retirement assets at retirement and applies the selected portfolio return.</p></div>
+<details class="form-group"><summary>Property and other assets</summary>
+<p class="hint">Add homes, land, rental or commercial buildings, and business interests separately from investment balances. Enter whole-property amounts before applying your ownership share. Keep property costs entered here out of base spending.</p>
+<div id="propertyFields"></div><button type="button" id="addProperty">+ Add an asset</button></details>
+<h3>Annual spending in today’s dollars</h3>
+<label>Base spending ($, excluding healthcare and taxes below)<input id="spend" type="number" min="0" value="70000"></label>
+<label>Healthcare paid out of pocket ($)<input id="health" type="number" min="0" value="0"></label>
+<label>Estimated taxes ($)<input id="retTaxes" type="number" min="0" value="0"></label>
+<p class="hint">Enter gross benefits. Include healthcare premiums, including any deducted from benefits, and total annual taxes in the separate fields. Each spending input grows with general inflation.</p>
+<h3>Social Security and pension</h3>
+<label>Social Security estimate type<select id="ssMode" class="smallselect"><option value="direct">SSA estimate at my chosen claiming age</option><option value="full">Estimate at my full retirement age</option></select></label>
+<p class="hint">Use your own worker benefit, in today’s dollars. Check whether your <a href="https://www.ssa.gov/myaccount/">SSA estimate</a> assumes earnings after you plan to stop working. For a partial benefit under an international agreement, enter the estimate SSA gives you at the chosen age.</p>
+<label>Birth year for claiming comparison (optional)<input id="birthYear" type="number" min="1943" step="1" placeholder="Estimated from current age if blank"></label>
+<details class="taxdetails"><summary>Started working in the U.S. later?</summary>
+<p class="hint">Regular eligibility generally takes <a href="https://www.ssa.gov/benefits/retirement/planner/credits.html">40 credits</a>. The benefit uses your highest 35 years of indexed U.S. covered earnings, with zeros for missing years. Some international agreements can help you qualify for a partial benefit. Under the <a href="https://www.ssa.gov/international/Agreement_Pamphlets/korea.html">U.S.–South Korea agreement</a>, you generally need at least six U.S. credits to use Korean credits for U.S. eligibility. Enter a foreign pension separately in the fields below.</p></details>
+<p class="hint">Amounts are in today’s dollars. Each benefit’s inflation setting applies from today through its start age and during payment years.</p>
+<div class="grid2"><label><span id="ssAmountLabel">Annual Social Security at the chosen claiming age ($)</span><input id="ss" type="number" min="0" value="30000"></label>
+<label>Social Security claiming age<input id="ssAge" type="number" min="62" max="120" value="67"></label>
+<label>Annual pension ($)<input id="pension" type="number" min="0" value="0"></label>
+<label>Pension start age<input id="pensionAge" type="number" min="18" max="120" value="65"></label>
+<label>Social Security inflation<select id="ssInflation" class="smallselect"><option value="general">Use general inflation</option><option value="none">No increase</option><option value="custom">Custom</option></select></label>
+<label>Custom Social Security increase (%)<input id="ssCola" type="number" min="0" max="30" step="0.1" value="2.5"></label>
+<label>Pension inflation<select id="pensionInflation" class="smallselect"><option value="none">No increase</option><option value="general">Use general inflation</option><option value="custom">Custom</option></select></label>
+<label>Custom pension increase (%)<input id="pensionCola" type="number" min="0" max="30" step="0.1" value="0"></label></div><details class="taxdetails"><summary>Foreign pension or foreign public benefit</summary>
+<div class="grid2"><label>Annual foreign benefit ($, today)<input id="foreignPension" type="number" min="0" value="0"></label>
+<label>Foreign benefit start age<input id="foreignAge" type="number" min="18" max="120" value="65"></label>
+<label>Foreign benefit inflation<select id="foreignInflation" class="smallselect"><option value="none">No increase</option><option value="general">Use general inflation</option><option value="custom">Custom</option></select></label>
+<label>Custom foreign benefit increase (%)<input id="foreignCola" type="number" min="0" max="30" step="0.1" value="0"></label></div>
+<p class="hint">Enter the amount in U.S. dollars. The model uses the exchange rate reflected in your input.</p></details>
+<label>Assumed nominal annual return before retirement (%)<input id="return" type="number" min="-50" max="50" step="0.1" value="5"></label><label>Assumed nominal annual return during retirement (%)<input id="postreturn" type="number" min="-50" max="50" step="0.1" value="4"></label><label>Annual inflation (%)<input id="inflation" type="number" min="0" max="30" step="0.1" value="2.5"></label>
+<details class="form-group" open><summary>Stress scenario and later retirement</summary>
+<label>Early retirement return in stress scenario (%)<input id="stressReturn" type="number" min="-100" max="100" step="0.1" value="-5"></label>
+<label>Years at stress return before normal returns resume<input id="stressYears" type="number" min="0" max="80" value="3"></label>
+<label>Additional years of retirement to fund in stress scenario<input id="stressExtra" type="number" min="0" max="40" value="5"></label>
+<label>Scheduled Social Security payable in stress scenario (%)<input id="ssPayable" type="number" min="0" max="100" step="1" value="78"></label>
+<label>Calendar year Social Security stress starts<input id="ssCutYear" type="number" min="1900" max="2200" value="2032"></label>
+<p class="hint">The <a href="https://www.ssa.gov/oact/tr/2026/II_E_conclu.html">2026 Trustees Report</a> projects that retirement and survivors reserves deplete in 2032, with ongoing revenues covering 78% of scheduled benefits at depletion absent legislation. This scenario uses an editable flat percentage from the entered year onward.</p>
+<label>Years to delay retirement for comparison<input id="delay" type="number" min="0" max="40" value="2"></label>
+</details></section><section><h2>Retirement readiness</h2><div class="summary-hero"><div id="realLabel" class="muted">Projected savings gap or surplus in today’s dollars</div><div id="realGap" class="big" aria-live="polite">—</div></div>
+<div id="retNote" class="note"></div><div id="retRows"></div><div id="retDelay"></div>
+<h3>Social Security claiming comparison</h3><div id="ssGuide"></div>
+<details class="taxdetails"><summary>Property and net worth breakdown</summary><div id="propertySummary"></div></details>
+<h3>Portfolio balance by age</h3><div id="retChart"></div>
+<h3>Spending before benefits start</h3><div id="retBridge"></div>
+<details class="taxdetails"><summary>Future-dollar breakdown</summary><div id="futureRows"></div></details></section></div><div class="footer"><strong>Money Across Life · Educational planning estimates.</strong> Debt projections assume fixed APRs and entered minimums, monthly interest, and no new borrowing or fees. Retirement uses end-of-year contributions and withdrawals, editable annual return scenarios, and user-entered healthcare and taxes. Keep sensitive account information out of the calculator.</div></main><script>const $=id=>document.getElementById(id),num=id=>{let x=Number($(id).value);return Number.isFinite(x)?Math.max(0,x):0},money=x=>new Intl.NumberFormat('en-US',{style:'currency',currency:'USD',maximumFractionDigits:0}).format(x),row=(name,v)=>`<div class="row"><span>${name}</span><span>${money(v)}</span></div>`;/* TAX_ENGINE_START */
+const MoneyTax = (() => {
+  'use strict';
+  const rates = [.10,.12,.22,.24,.32,.35,.37];
+  const laws = {
+    2026: {
+      single:[12400,50400,105700,201775,256225,640600],
+      joint:[24800,100800,211400,403550,512450,768700],
+      head:[17700,67450,105700,201750,256200,640600],
+      separate:[12400,50400,105700,201775,256225,384350],
+      standard:{single:16100,joint:32200,head:24150,separate:16100},
+      gains:{single:[49450,545500],joint:[98900,613700],head:[66200,579600],separate:[49450,306850]},
+      ss:184500,k:24500,hsa:[4400,8750],child:2200,
+      roth:{single:[153000,168000],joint:[242000,252000],head:[153000,168000],separate:[0,10000]},
+      iraSingle:81000,iraJoint:129000
+    },
+    2027: {
+      single:[12800,52025,109125,208325,264550,661375],
+      joint:[25600,104050,218250,416650,529100,793650],
+      head:[18250,69650,109100,208300,264550,661350],
+      separate:[12800,52025,109125,208325,264550,396825],
+      standard:{single:16600,joint:33200,head:24925,separate:16600},
+      gains:{single:[51050,563200],joint:[102100,633600],head:[68350,598400],separate:[51050,316800]},
+      ss:192300,k:25500,hsa:[4500,9000],child:2300,
+      roth:{single:[158000,173000],joint:[250000,260000],head:[158000,173000],separate:[0,10000]},
+      iraSingle:83000,iraJoint:133000
+    }
+  };
+  const noBroadTax = new Set(['Alaska','Florida','Nevada','New Hampshire','South Dakota','Tennessee','Texas','Wyoming']);
+  const reciprocalIL = new Set(['Iowa','Kentucky','Michigan','Wisconsin']);
+  const positive = x => Math.max(0,x);
+  const optional = x => x === undefined || x === null ? null : x;
+  const taxBands = (amount, ceilings, bandRates) => [...ceilings,Infinity].map((ceiling,i) => {
+    const floor = i ? ceilings[i-1] : 0;
+    const taxable = positive(Math.min(amount,ceiling)-floor);
+    return {floor,ceiling,rate:bandRates[i],taxable,tax:taxable*bandRates[i]};
+  });
+  const sumTax = bands => bands.reduce((sum,b) => sum+b.tax,0);
+  const phaseLimit = (limit, agi, [lower,upper], step) => {
+    if (agi >= upper || limit <= 0) return 0;
+    if (agi <= lower) return limit;
+    return Math.min(limit,Math.max(200,Math.ceil(limit*(upper-agi)/(upper-lower)/step)*step));
+  };
+  function calculate(input) {
+    const {year, filing, residence} = input;
+    const rule = laws[year] || laws[2027];
+    const joint = filing === 'joint';
+    const separate = filing === 'separate';
+    const threshold = joint ? 250000 : separate ? 125000 : 200000;
+    const issues = [];
+    const people = input.people.slice(0,joint?2:1).map(p => ({
+      ...p,wages:p.salary+p.bonus,medicareWages:p.salary+p.bonus,netBusiness:0,kActual:0
+    }));
+    let monthlyExtra=0, ordinary=0, qualified=0, investment=0, long=0, short=0;
+    for (const item of input.income) {
+      const multiplier = item.recurring ? 12 : 1;
+      const net = (item.amount-item.cost)*multiplier;
+      monthlyExtra += item.kind==='stocks' ? item.amount : net/multiplier;
+      if (item.kind==='freelance') {
+        people[item.owner || 0].netBusiness += net;
+      } else if (item.kind==='stocks') {
+        if (item.preferred) long+=net;
+        else short+=net;
+      } else if (item.kind==='dividends' && item.preferred) {
+        qualified+=net;
+        investment+=net;
+      } else {
+        const included = item.kind==='rental' && net<0 ? 0 : net;
+        if (included !== net) issues.push('Rental loss is excluded pending passive-loss and basis rules.');
+        ordinary+=included;
+        investment+=included;
+      }
+    }
+    const gain = long+short;
+    const capLossLimit = separate ? 1500 : 3000;
+    const allowedGain = Math.max(-capLossLimit,gain);
+    const preferred = positive(Math.min(long,gain))+qualified;
+    const requestedHsa = input.hsa || 0;
+    const hsaBase = input.hsaCoverage==='family' ? rule.hsa[1] : input.hsaCoverage==='self' ? rule.hsa[0] : 0;
+    const maxHsa = hsaBase + (hsaBase && people[0].age>=55 ? 1000 : 0);
+    const hsa = Math.min(requestedHsa,input.hsaPayroll ? people[0].wages : Infinity,positive(maxHsa-(input.employerHsa || 0)));
+    if (requestedHsa>hsa) issues.push('HSA contribution trimmed to the supported full-year eligible limit after employer funding.');
+    const payrollHsa = input.hsaPayroll ? Math.min(hsa,people[0].wages) : 0;
+    for (const [i,p] of people.entries()) {
+      p.medicareWages -= i===0 ? payrollHsa : 0;
+      p.kActual = Math.min(rule.k,p.wages*p.kRate,p.medicareWages);
+      p.kMonth = p.wages ? (p.salary/12+p.bonus)*p.kActual/p.wages : 0;
+      p.w2 = p.medicareWages-(p.traditional?p.kActual:0);
+      p.seBase = positive(p.netBusiness)*.9235;
+      if (p.seBase<400) p.seBase=0;
+      p.social = Math.min(p.medicareWages,rule.ss)*.062;
+      p.medicare = p.medicareWages*.0145;
+      p.seTax = Math.min(p.seBase,positive(rule.ss-p.medicareWages))*.124+p.seBase*.029;
+      p.compensation = positive(p.w2+p.netBusiness-p.seTax/2);
+    }
+    const total = key => people.reduce((s,p)=>s+p[key],0);
+    const seDeduction = total('seTax')/2;
+    const gross = total('wages')+total('netBusiness')+ordinary+qualified+gain;
+    const iraMagi = total('w2')+total('netBusiness')+ordinary+qualified+allowedGain-seDeduction-(hsa-payrollHsa);
+    let iraRemaining = total('compensation');
+    for (const p of people) {
+      const iraCap = Math.min(7500+(p.age>=50?1100:0), joint?iraRemaining:p.compensation);
+      const rothBands = separate && input.livedApart ? rule.roth.single : rule.roth[filing];
+      const rothLimit = Math.min(iraCap,phaseLimit(7500+(p.age>=50?1100:0),iraMagi,rothBands,10));
+      p.ira = p.iraType==='roth' ? Math.min(p.iraRequest || 0,rothLimit) : Math.min(p.iraRequest || 0,iraCap);
+      iraRemaining -= p.ira;
+      if (p.ira<(p.iraRequest || 0)) issues.push('IRA contribution trimmed for compensation, the annual limit or the Roth income phaseout.');
+      const covered = p.covered || p.kActual>0;
+      const spouseCovered = people.some(q=>q!==p&&(q.covered || q.kActual>0 || q.kRate>0)) || input.separateSpouseCovered;
+      const lo = separate && !input.livedApart ? 0 : joint ? (covered ? rule.iraJoint : rule.roth.joint[0]) : rule.iraSingle;
+      const width = joint && covered ? 20000 : 10000;
+      p.iraDeduction = p.iraType==='traditional' ? Math.min(p.ira,covered || ((joint||(separate&&!input.livedApart))&&spouseCovered)
+        ? phaseLimit(7500+(p.age>=50?1100:0),iraMagi,[lo,lo+width],10) : p.ira) : 0;
+    }
+    const agi = iraMagi-total('iraDeduction');
+    const deduction = input.itemized ?? rule.standard[filing];
+    if (people.some(p=>p.age>=65)) issues.push("Review the age-based standard deduction and senior deduction. Enter any eligible additions using verified deduction inputs.");
+    const taxable = positive(agi-deduction-(input.otherDeduction || 0));
+    const preferredTaxable = Math.min(taxable,preferred);
+    const ordinaryTaxable = taxable-preferredTaxable;
+    const bands = taxBands(ordinaryTaxable,rule[filing],rates);
+    const [zeroTop,fifteenTop] = rule.gains[filing];
+    const gainsBands = taxBands(taxable,[zeroTop,fifteenTop],[0,.15,.20]).map(b=>{
+      const slice = positive(Math.min(taxable,b.ceiling)-Math.max(ordinaryTaxable,b.floor));
+      return {...b,taxable:slice,tax:slice*b.rate};
+    });
+    const regular = Math.min(sumTax(bands)+sumTax(gainsBands),sumTax(taxBands(taxable,rule[filing],rates)));
+    const childPhase = Math.ceil(positive(agi-(joint?400000:200000))/1000)*50;
+    const childCredit = positive((input.children || 0)*rule.child-childPhase);
+    const nonrefundable = Math.min(regular,childCredit+(input.federalCredit || 0));
+    const niit = .038*Math.min(positive(investment+allowedGain-(input.niitDeduction || 0)),positive(agi-threshold));
+    const additionalMedicare = .009*positive(total('medicareWages')+total('seBase')-threshold);
+    const federal = regular-nonrefundable+niit+(input.extraFederalTax || 0)-(input.refundableCredit || 0);
+    const payroll = total('social')+total('medicare')+total('seTax')+additionalMedicare+(input.extraPayroll || 0);
+    const outside = people.filter(p=>p.wages>0&&p.work!==residence);
+    const outOfState = outside.filter(p=>!(residence==='Illinois'&&reciprocalIL.has(p.work))
+      &&!(p.work==='Illinois'&&reciprocalIL.has(residence)) && !noBroadTax.has(p.work));
+    const foreignIncome = input.income.filter(i=>i.place!==residence && i.amount!==i.cost);
+    const outsideSources = foreignIncome.length>0;
+    const foreignStates = new Set([...outOfState.map(p=>p.work),...foreignIncome.map(i=>i.place)]);
+    let state = optional(input.stateOverride);
+    let stateBasis = 'User-entered net annual liability';
+    if (state===null) {
+      stateBasis = 'Unavailable';
+      if (Number(year)<=2027 && ((!outOfState.length && !outsideSources) || (residence==='Illinois' && foreignStates.size===1 && input.otherStateLiability!=null && input.scheduleCRShare!=null))) {
+        if (residence==='Illinois' && Number(year)===2026) {
+          const exemption = agi>(joint?500000:250000) ? 0 : 2925*((joint?2:1)+(input.dependents || 0));
+          state = positive(agi+(input.stateAdjustment || 0)-exemption)*.0495-(input.stateCredit || 0);
+          stateBasis = 'Illinois base income less exemption allowance, 4.95%, then entered credits';
+          if (outOfState.length || outsideSources) {
+            const beforeCredits = state+(input.stateCredit || 0);
+            const credit = Math.min(positive(state),beforeCredits*Math.round(input.scheduleCRShare*1000)/1000,input.otherStateLiability);
+            state = positive(state-credit)+input.otherStateLiability;
+            stateBasis += '; entered source tax less Schedule CR credit (one state only)';
+          }
+        } else if (residence==='North Carolina' && Number(year)===2026) {
+          const stateStd = {single:12750,separate:12750,head:19125,joint:25500};
+          if (!(input.dependents || input.children) || input.stateAdjustmentConfirmed) {
+            state = positive(agi+(input.stateAdjustment || 0)-(input.stateDeduction ?? stateStd[filing]))*.0399-(input.stateCredit || 0);
+            stateBasis = 'North Carolina adjusted income less state deduction, 3.99%, then entered credits';
+          }
+        } else if (residence==='New York' && Number(year)===2026 && input.stateTaxable!=null && input.nyAgi!=null && input.nyAgi<=107650) {
+          const ceilings = {
+            single:[8500,11700,13900,80650,215400,1077550,5000000,25000000],
+            separate:[8500,11700,13900,80650,215400,1077550,5000000,25000000],
+            joint:[17150,23600,27900,161550,323200,2155350,5000000,25000000],
+            head:[12800,17650,20900,107650,269300,1616450,5000000,25000000]
+          };
+          state = sumTax(taxBands(input.stateTaxable,ceilings[filing],[.039,.044,.0515,.054,.059,.0685,.0965,.103,.109]))-(input.stateCredit || 0);
+          stateBasis = 'New York scheduled rates on entered taxable income, less entered credits';
+        } else if (residence==='Wisconsin' && Number(year)===2026 && input.stateTaxable!=null) {
+          const ceilings = {single:[15110,51950,332720],head:[15110,51950,332720],joint:[20150,69260,443630],separate:[10080,34630,221820]};
+          state = sumTax(taxBands(input.stateTaxable,ceilings[filing],[.035,.044,.053,.0765]))-(input.stateCredit || 0);
+          stateBasis = 'Wisconsin brackets on entered state taxable income, less entered credits';
+        } else if (!input.income.some(i=>i.kind==='freelance' && i.amount>0) && (noBroadTax.has(residence) ||
+          (residence==='Washington' && !input.income.some(i=>i.kind==='stocks'&&i.preferred&&i.amount>i.cost)))) {
+          state = 0;
+          stateBasis = 'No broad individual income tax for modeled income';
+        }
+      }
+    }
+    let local = optional(input.localOverride);
+    let localBasis = 'User-entered net annual liability';
+    if (local===null && residence==='New York' && Number(year)===2026 && input.nycTaxable!=null) {
+      const ceilings = {single:[12000,25000,50000],separate:[12000,25000,50000],head:[14400,30000,60000],joint:[21600,45000,90000]};
+      local = positive(sumTax(taxBands(input.nycTaxable,ceilings[filing],[.03078,.03762,.03819,.03876]))-(input.localCredit || 0));
+      localBasis = 'NYC resident brackets on entered city taxable income, less entered credits';
+    }
+    const missing = [];
+    if (state===null) missing.push('state liability');
+    if (local===null) missing.push('local liability');
+    if (input.requirePayrollConfirmation && input.extraPayroll===null) missing.push('state/local employee payroll contributions');
+    if (Number(year)>2027) issues.push('Projection using fixed 2027 federal parameters. Later law and inflation adjustments are excluded.');
+    if ((outOfState.length || outsideSources) && !stateBasis.includes('Schedule CR credit')) issues.push('Multistate sourcing and resident credits require an official net state liability for this scenario.');
+    if (outside.length && !outOfState.length) issues.push('Supported wage reciprocity or a no-broad-tax work state applied. Local obligations are evaluated separately.');
+    if (input.children) issues.push('Child Tax Credit is modeled as nonrefundable. Enter any ACTC separately using Schedule 8812.');
+    if (total('netBusiness')!==0) issues.push('Enter any qualified business income deduction from Form 8995/8995-A. Business income assumes active sole proprietor work.');
+    if (input.itemized!==null && input.itemized!==undefined) issues.push('Federal itemized amount must reflect applicable limits and phaseouts. Enter the state deduction separately where supported.');
+    if (separate&&(input.itemized===null||input.itemized===undefined)) issues.push('Standard deduction assumes the other spouse does not itemize.');
+    if (input.creditsNeedReview) issues.push('Review AMT, EITC and other return-specific adjustments against official worksheets. Low-income tax-table rounding may differ from the rate schedule shown.');
+    const totalTax = missing.length ? null : federal+state+local+payroll;
+    const monthlyCash = people.reduce((s,p)=>s+p.salary/12+p.bonus,0)+monthlyExtra;
+    const monthlyContribution = total('kMonth')+(hsa+total('ira'))/12;
+    return {issues,missing,gross,agi,deduction,taxable,ordinaryTaxable,preferredTaxable,bands,gainsBands,regular,
+      niit,nonrefundable,childCredit,federal,state,stateBasis,local,localBasis,payroll,totalTax,seDeduction,
+      social:total('social'),medicare:total('medicare'),seTax:total('seTax'),additionalMedicare,
+      lossCarry:positive(-gain-capLossLimit),hsa,people,monthlyCash,monthlyContribution,
+      monthlyNet:totalTax===null?null:monthlyCash-monthlyContribution-totalTax/12};
+  }
+  return {calculate,laws};
+})();
+/* TAX_ENGINE_END */
+function young(){
+const actual=$('payMode').value==='actual';
+$('actualInputs').hidden=!actual;
+$('grossInputs').hidden=actual;
+$('annualDetails').hidden=actual;
+$('taxConfidence').hidden=actual;
+if(actual){
+ const entered=$('actualNet').value.trim()!=='';
+ const typical=entered?num('actualNet')-num('actualReserve'):null;
+ const once=num('actualOnce')-num('onceReserve');
+ const deferral=num('actualDeferral');
+ const match=Math.min(deferral,num('actualEligible')*Math.min(100,num('employerpct'))/100);
+ $('taxJump').hidden=true;
+ $('taxbreak').textContent='Typical-month reserve '+money(num('actualReserve'))+'. This month also reserves '+money(num('onceReserve'))+' for one-time cash. Withholding and payroll deductions are already reflected in the entered take-home.';
+ renderBudget(typical,typical===null?null:typical+once,deferral,match,match);
+ return;
+}
+const v=num;
+const val=id=>$(id).value;
+const optional=id=>val(id).trim()==='' || !Number.isFinite(Number(val(id))) ? null : Number(val(id));
+const nonnegative=id=>optional(id)===null ? null : Math.max(0,optional(id));
+const filing=val('filing'), isJoint=filing==='joint', residence=val('state');
+$('spouseSection').classList.toggle('hidden',!isJoint);
+const place=value=>value==='same'?residence:value;
+const people=[{
+ salary:v('salary'),bonus:v('bonus'),kRate:Math.min(100,v('kpercent'))/100,traditional:val('kType')==='traditional',
+ work:place(val('workstate')), age:v('taxAge'),iraType:val('iraType'),iraRequest:v('iraRequest'),covered:val('covered')==='yes'
+}];
+if(isJoint) people.push({
+ salary:v('spouseSalary'),bonus:v('spouseBonus'),kRate:Math.min(100,v('spouseK'))/100,traditional:val('spouseKType')==='traditional',
+ work:place(val('spouseWork')),age:v('spouseTaxAge'),iraType:val('spouseIraType'),iraRequest:v('spouseIraRequest'),covered:val('spouseCovered')==='yes'
+});
+const income=[...document.querySelectorAll('.extra-card')].map(card=>{
+ const field=selector=>card.querySelector(selector).value;
+ const n=selector=>Math.max(0,Number(field(selector))||0);
+ const kind=field('.incomeType');
+ card.querySelector('.incomeOwner').classList.toggle('hidden',!isJoint||kind!=='freelance');
+ return {kind,amount:n('.amount'),cost:kind==='stocks'?n('.cost'):['rental','freelance'].includes(kind)?n('.expense'):0,
+   preferred:field('.holding')==='long',recurring:kind!=='stocks'&&field('.frequency')==='monthly',place:place(field('.place')),
+   owner:isJoint?Number(field('.owner')):0};
+});
+const taxInput={
+ year:Number(val('taxyear')),filing,residence,people,income,
+ itemized:val('deduction')==='itemized'?v('itemized'):null,
+ federalCredit:v('credits'),extraFederalTax:v('extraFederalTax'),refundableCredit:v('refundableCredit'),
+ otherDeduction:v('otherDeduction'),niitDeduction:v('niitDeduction'),children:Math.floor(v('children')),
+ hsa:v('hsa'),hsaCoverage:val('hsaCoverage'),employerHsa:v('employerHsa'),hsaPayroll:val('hsaPayroll')==='yes',
+ stateAdjustment:optional('stateAdjustment'),stateAdjustmentConfirmed:optional('stateAdjustment')!==null,
+ stateDeduction:nonnegative('stateDeduction'),stateTaxable:nonnegative('stateTaxable'),
+ nyAgi:optional('nyAgi'),stateCredit:v('stateCredit'),dependents:Math.floor(v('dependents')),nycTaxable:nonnegative('nycTaxable'),
+ localCredit:v('localCredit'),stateOverride:optional('stateOverride'),localOverride:optional('localOverride'),
+ scheduleCRShare:optional('scheduleCRShare')===null?null:Math.min(100,v('scheduleCRShare'))/100,
+ otherStateLiability:nonnegative('otherStateLiability'),extraPayroll:nonnegative('extraPayroll'),
+ separateSpouseCovered:val('spouseCovered')==='yes',livedApart:val('livedApart')==='yes',
+ requirePayrollConfirmation:true,creditsNeedReview:true
+};
+const result=MoneyTax.calculate(taxInput);
+const typical=MoneyTax.calculate({...taxInput,people:people.map(person=>({...person,bonus:0})),income:income.filter(item=>item.recurring)});
+const oneTimeOverrideTax=v('oneTimeOverrideTax');
+const typicalReserve=typical.totalTax===null?null:(typical.totalTax-oneTimeOverrideTax)/12;
+const incrementalTax=result.totalTax===null||typicalReserve===null?null:
+ result.totalTax-typical.totalTax+oneTimeOverrideTax;
+const typicalNet=typicalReserve===null?null:typical.monthlyCash-typical.monthlyContribution-typicalReserve;
+const inc=result.totalTax===null||typicalNet===null?null:
+ result.monthlyCash-result.monthlyContribution-typicalReserve-incrementalTax;
+const missing=[...new Set([...result.missing,...typical.missing])];
+$('taxJump').hidden=missing.length===0;
+$('taxConfidence').className=missing.length?'note warn':'note';
+const gross=people[0].salary/12+people[0].bonus, deferral=result.people[0].kMonth;
+const kp=gross>0?deferral/gross:0;
+const rate=x=>x===null||result.gross<=0?'Unavailable':(100*x/result.gross).toFixed(2)+'%';
+const display=x=>x===null?'Unavailable':money(x);
+$('fedRate').textContent=rate(result.federal);
+$('stateRateDisplay').textContent=rate(result.state);
+$('blendedRate').textContent=rate(result.state===null||result.local===null?null:result.federal+result.state+result.local);
+$('taxbreak').textContent=inc===null?'Tax reserve unavailable until applicable liabilities are entered for both views.':
+ 'Typical-month tax reserve: '+money(typicalReserve)+'. This month adds '+money(result.monthlyCash-typical.monthlyCash)+' in one-time cash, subtracts '+money(result.monthlyContribution-typical.monthlyContribution)+' in extra modeled contributions, and reserves '+money(incrementalTax)+' for the change in modeled annual tax. Annual worksheet entries are held fixed across both views, including any overrides. Use the one-time worksheet tax field to move that portion into this month.';
+$('taxConfidence').textContent=(missing.length?'Cash plan paused. Confirm '+missing.join(', ')+'. ':'')+[...new Set([...result.issues,...typical.issues])].join(' ');
+const line=(name,value)=>'<div class="row"><span>'+name+'</span><span>'+value+'</span></div>';
+const bands=(name,entries)=>'<details><summary>'+name+'</summary>'+entries.filter(b=>b.taxable>0)
+ .map(b=>line(money(b.taxable)+' at '+(b.rate*100).toFixed(2)+'%',money(b.tax))).join('')+'</details>';
+$('annualBreak').innerHTML=[
+ ['Income denominator',result.gross],['Federal adjusted gross income',result.agi],['Standard or entered itemized deduction',result.deduction],
+ ['Taxable ordinary income',result.ordinaryTaxable],['Taxable qualified dividends and net long-term gains',result.preferredTaxable],
+ ['Capital loss carryforward before Form Schedule D carryover adjustments',result.lossCarry],['Deductible half of SE tax',result.seDeduction],
+ ['Regular federal income tax before credits',result.regular],['Nonrefundable credits applied',result.nonrefundable],['NIIT',result.niit],
+ ['Net federal income tax',result.federal],['State income tax',result.state],['Local income tax',result.local],
+ ['Employee Social Security',result.social],['Employee Medicare',result.medicare],['Self-employment tax',result.seTax],
+ ['Additional Medicare Tax',result.additionalMedicare],['Federal payroll subtotal',result.payroll-(nonnegative('extraPayroll')||0)],['Employee state/local payroll contributions',nonnegative('extraPayroll')],
+ ['Total employee payroll taxes',nonnegative('extraPayroll')===null?null:result.payroll],
+ ['All modeled taxes',result.totalTax]
+].map(([label,value])=>line(label,display(value))).join('')+
+line('Total effective tax rate',rate(result.totalTax))+
+'<p class="hint">'+result.stateBasis+'. '+(result.local===null?'Local tax unavailable':result.localBasis)+'.</p>'+
+bands('Ordinary income brackets',result.bands)+bands('Preferential income brackets',result.gainsBands)+
+result.people.map((p,i)=>'<details><summary>'+(i?'Spouse':'Primary filer')+' contributions and payroll</summary>'+
+ row('Annual 401(k) deferral',p.kActual)+row('Annual IRA contribution',p.ira)+row('Deductible IRA',p.iraDeduction)+row('Medicare wages',p.medicareWages)+
+ row('Social Security tax',p.social)+row('Self-employment net earnings',p.seBase)+'</details>').join('')+row('Allowed employee HSA contribution',result.hsa);
+const cap=Math.min(100,v('employerpct'))/100;
+const typicalGross=people[0].salary/12;
+renderBudget(typicalNet,inc,deferral,gross*Math.min(kp,cap),Math.min(typical.people[0].kMonth,typicalGross*cap));
+}
+const allocationLabels=[
+ 'Starter emergency liquidity','Extra credit card repayment','Extra student loan repayment',
+ 'Emergency savings toward your target','Remaining long-term savings / other goals'
+];
+const debtNames=['Credit card','Student loan'];
+const shown=value=>value===null?'Unavailable':money(value);
+const monthLabel=offset=>{
+ const today=new Date();
+ return new Intl.DateTimeFormat('en-US',{month:'short',year:'numeric'}).format(
+  new Date(today.getFullYear(),today.getMonth()+offset-1,1));
+};
+
+function planMonth(debts, savings, config, cash){
+ const due=debts.map(d=>d.balance*(1+d.apr/1200));
+ const minimums=debts.map((d,i)=>Math.min(d.minimum,due[i]));
+ const surplus=cash===null?null:cash-config.expenses-minimums.reduce((sum,x)=>sum+x,0);
+ const allocations=allocationLabels.map(()=>0);
+ let remaining=Math.max(0,surplus);
+ const allocate=(index,cap)=>{
+  const amount=Math.min(remaining,Math.max(0,cap));
+  allocations[index]=amount;
+  remaining-=amount;
+ };
+ allocate(0,Math.min(config.starter,config.target)-savings);
+ const order=debts.map((_,i)=>i).sort((a,b)=>debts[b].apr-debts[a].apr);
+ for(const i of order.filter(i=>debts[i].apr>=config.cutoff)) allocate(i+1,due[i]-minimums[i]);
+ allocate(3,Math.min(config.target-savings-allocations[0],(config.target-savings)/config.timeline));
+ for(const i of order.filter(i=>debts[i].apr<config.cutoff)) allocate(i+1,due[i]-minimums[i]);
+ allocate(4,remaining);
+ return {due,minimums,surplus,allocations};
+}
+
+function projectDebt(initial, config, firstCash, recurringCash, usePlan){
+ const debts=initial.map(d=>({...d,interest:0,paid:d.balance===0?0:null}));
+ let savings=config.savings;
+ for(let month=1;month<=1200&&debts.some(d=>d.paid===null);month++){
+  const cash=month===1?firstCash:recurringCash;
+  const {due,minimums,surplus,allocations}=planMonth(debts,savings,config,cash);
+  if(usePlan&&surplus < -0.005) return {debts,shortfall:month};
+  savings+=usePlan?allocations[0]+allocations[3]:0;
+  debts.forEach((debt,i)=>{
+   if(debt.paid!==null) return;
+   debt.interest+=due[i]-debt.balance;
+   debt.balance=Math.max(0,due[i]-minimums[i]-(usePlan?allocations[i+1]:0));
+   if(debt.balance<0.005) debt.paid=month;
+  });
+ }
+ return {debts,shortfall:null};
+}
+
+function comparisonTable(headers,rows){
+ return '<div class="table-scroll"><table class="comparison"><thead><tr>'+
+ headers.map(label=>'<th scope="col">'+label+'</th>').join('')+
+ '</tr></thead><tbody>'+rows.map(([label,...values])=>'<tr><th scope="row">'+label+
+ '</th>'+values.map(value=>'<td>'+value+'</td>').join('')+'</tr>').join('')+'</tbody></table></div>';
+}
+
+let baseline=null,budgetSnapshot=null;
+function renderComparison(){
+ $('saveBaseline').disabled=!budgetSnapshot;
+ $('clearBaseline').hidden=!baseline;
+ if(!baseline){
+  $('comparison').innerHTML='';
+  return;
+ }
+ $('saveBaseline').textContent='Replace baseline';
+ const rows=baseline.map(([label,saved],i)=>{
+  const current=budgetSnapshot?.[i][1]??null;
+  const difference=current===null?null:current-saved;
+  return [label,money(saved),shown(current),difference>0?'+'+money(difference):shown(difference)];
+ });
+ $('comparison').innerHTML=comparisonTable(['Monthly amount','Baseline','Current','Change'],rows);
+}
+function renderBudget(typicalCash,thisCash,deferral,match,typicalMatch){
+ const fixed=['rent','mortgage','carpayment','carinsurance','homeinsurance','utilities','otherfixed']
+  .reduce((total,id)=>total+num(id),0);
+ const expenses=fixed+num('expenses');
+ const debts=[
+  {balance:num('card'),apr:Math.min(100,num('apr')),minimum:num('cardmin')},
+  {balance:num('loan'),apr:Math.min(100,num('loanapr')),minimum:num('loanmin')}
+ ];
+ const config={expenses,savings:num('savings'),target:num('target'),starter:num('starter'),
+  cutoff:Math.min(100,num('debtCutoff')),timeline:Math.max(1,num('timeline'))};
+ const typical=planMonth(debts,config.savings,config,typicalCash);
+ const current=planMonth(debts,config.savings,config,thisCash);
+ const minimums=current.minimums.reduce((sum,x)=>sum+x,0);
+ $('available').textContent=shown(current.surplus);
+ $('typicalAvailable').textContent=shown(typical.surplus);
+ $('takehome').textContent=shown(thisCash);
+ $('typicalTakehome').textContent=shown(typicalCash);
+ $('budgetSummary').textContent='Fixed bills '+money(fixed)+' + everyday essentials '+money(expenses-fixed)+
+  ' + minimum debt payments '+money(minimums)+'.';
+ const barMax=Math.max(1,expenses*6,config.target);
+ const bar=(label,amount)=>'<div class="efrow"><span>'+label+'</span><div class="eftrack"><div class="efbar" style="width:'+
+  (amount/barMax*100)+'%"></div></div><strong>'+money(amount)+'</strong></div>';
+ const gap=Math.max(0,config.target-config.savings);
+ $('efChart').innerHTML='<p class="hint">3–6 months of essentials, excluding debt minimums</p>'+
+  bar('3 months',expenses*3)+bar('6 months',expenses*6)+bar('Your target',config.target)+row('Gap to target',gap);
+ $('suggested').textContent=money(gap/config.timeline)+'/mo';
+ const allocationRows=month=>{
+  if(month.surplus===null) return '<p>Enter income or confirm missing tax inputs to see allocations.</p>';
+  if(month.surplus<0) return '<p class="note warn">Monthly shortfall '+money(-month.surplus)+'.</p>';
+  return month.allocations.map((amount,i)=>amount>0.005?row(allocationLabels[i],amount):'').join('')||
+   '<p>No surplus to allocate.</p>';
+ };
+ $('alloc').innerHTML=allocationRows(current);
+ $('typicalAlloc').innerHTML=allocationRows(typical);
+ $('youngNote').textContent='Allocation order: starter buffer → debt at '+config.cutoff+
+  '% APR or higher → emergency savings at your chosen pace → other debt → longer-term goals. Primary employee 401(k) this month: '+
+  money(deferral)+'. Estimated employer match: '+money(match)+' this month and '+money(typicalMatch)+' in a typical month.';
+ renderDebt(debts,config,thisCash,typicalCash);
+ budgetSnapshot=thisCash===null||typicalCash===null?null:[
+  ['Typical take-home',typicalCash],['This-month take-home',thisCash],['Living expenses',expenses],
+  ['Debt minimums',minimums],['Total required expenses',expenses+minimums],
+  ['Typical surplus',typical.surplus],['This-month surplus',current.surplus],
+  ['This-month employer match',match],['Typical employer match',typicalMatch],
+  ...allocationLabels.map((label,i)=>['This month · '+label,current.allocations[i]]),
+  ...allocationLabels.map((label,i)=>['Typical month · '+label,typical.allocations[i]])
+ ];
+ if(!baseline) $('saveBaseline').textContent='Save baseline';
+ renderComparison();
+}
+
+function renderDebt(debts,config,firstCash,typicalCash){
+ if(debts.every(d=>d.balance===0)){
+  $('debtProjection').textContent='No outstanding credit card or student loan balance.';
+  return;
+ }
+ const minimum=projectDebt(debts,config,firstCash,typicalCash,false);
+ const plan=firstCash===null||typicalCash===null?null:projectDebt(debts,config,firstCash,typicalCash,true);
+ const payoff=d=>d.paid===0?'Already paid':d.paid===null?'Beyond 100 years':monthLabel(d.paid);
+ const rows=minimum.debts.map((min,i)=>{
+  const projected=plan?.debts[i];
+  return [debtNames[i],payoff(min),projected&&(projected.paid!==null||!plan.shortfall)?payoff(projected):'Unavailable',
+   projected?.paid!=null&&min.paid!==null?money(min.interest-projected.interest):'—'];
+ });
+ const notes=['Assumes entered minimum payments stay fixed until payoff, with interest added monthly. The plan applies this month’s cash once and then uses typical-month cash. As balances fall, freed payments become available for other goals.',
+  plan?.shortfall?'The plan has a shortfall in projection month '+plan.shortfall+'. Payoff after that point is unavailable.':'',
+  minimum.debts.some(d=>d.paid===null)?'A minimum that fails to cover monthly interest can leave a balance growing. Interest saved requires payoff in both projections.':'',
+  !plan?'Enter income or confirm missing tax inputs to project the current plan.':''];
+ $('debtProjection').innerHTML=comparisonTable(['Debt','Minimums only','Current plan','Interest saved'],rows)+
+  '<p class="hint">'+notes.filter(Boolean).join(' ')+'</p>';
+}
+
+const accountTypes=['Traditional 401(k) and IRA','Roth 401(k) and IRA','Taxable brokerage','Cash and savings'];
+const propertyTypes=['Primary home','Rental property','Vacant land','Commercial building','Business interest','Other real estate'];
+
+function setupRetirementAssets(){
+ $('accountFields').innerHTML=accountTypes.map((name,i)=>'<h4>'+name+'</h4><div class="grid2">'+
+  '<label>Current balance ($)<input id="acctBalance'+i+'" type="number" min="0" value="0"></label>'+
+  '<label>Annual contribution ($)<input id="acctContribution'+i+'" type="number" min="0" value="0"></label></div>').join('');
+ $('accountFields').addEventListener('input',retirement);
+ $('propertyFields').addEventListener('input',retirement);
+ $('propertyFields').addEventListener('change',retirement);
+ $('addProperty').addEventListener('click',addProperty);
+}
+
+function retirementAccounts(){
+ const balances=accountTypes.map((_,i)=>num('acctBalance'+i));
+ const contributions=accountTypes.map((_,i)=>num('acctContribution'+i));
+ return {wealth:balances.slice(0,3).reduce((sum,x)=>sum+x,0),
+  contribution:contributions.slice(0,3).reduce((sum,x)=>sum+x,0),cash:balances[3],cashContribution:contributions[3]};
+}
+function addProperty(){
+ const card=document.createElement('div');
+ card.className='property-card taxdetails';
+ card.innerHTML=`<label>Asset type<select class="propertyType smallselect">${propertyTypes.map(name=>'<option>'+name+'</option>').join('')}</select></label>
+ <div class="grid2">
+ <label>Current value ($)<input class="propertyValue" type="number" min="0" value="0"></label>
+ <label>Ownership share (%)<input class="propertyShare" type="number" min="0" max="100" value="100"></label>
+ <label>Debt outstanding today ($)<input class="propertyDebt" type="number" min="0" value="0"></label>
+ <label>Annual nominal value growth (%)<input class="propertyGrowth" type="number" min="-50" max="50" value="2.5" step="0.1"></label>
+ <label>Annual rent after operations and debt payments ($, today)<input class="propertyRent" type="number" step="any" value="0"></label>
+ <label>Annual carrying costs outside net rent ($, today)<input class="propertyCosts" type="number" min="0" value="0"></label></div>
+ <label>Retirement plan<select class="propertyAction smallselect"><option value="hold">Hold</option><option value="sell">Sell or downsize</option></select></label>
+ <div class="saleFields" hidden><div class="grid2">
+ <label>Age when sale proceeds become available<input class="propertyAge" type="number" min="18" max="160" value="${num('retage')}"></label>
+ <label>Estimated debt payoff at sale ($, future dollars)<input class="propertyPayoff" type="number" min="0" placeholder="Defaults to current debt"></label>
+ <label>Selling costs (% of projected sale price)<input class="propertyFee" type="number" min="0" max="100" value="6"></label>
+ <label>Estimated tax on sale ($, today)<input class="propertyTax" type="number" min="0" value="0"></label>
+ <label>Replacement property cost including fees ($, today)<input class="propertyReplacement" type="number" min="0" value="0"></label></div></div>
+ <p class="hint">Rent and carrying costs grow with general inflation and apply during retirement until the sale. Include each expense once.</p>
+ <button type="button" class="removeProperty">Remove asset</button>`;
+ card.querySelector('.removeProperty').addEventListener('click',()=>{card.remove();retirement()});
+ $('propertyFields').appendChild(card);
+ retirement();
+}
+function readProperties(){
+ return [...$('propertyFields').querySelectorAll('.property-card')].map(card=>{
+  const field=name=>card.querySelector('.property'+name).value;
+  const amount=name=>Math.max(0,Number(field(name))||0);
+  const sell=field('Action')==='sell';
+  card.querySelector('.saleFields').hidden=!sell;
+  return {type:field('Type'),value:amount('Value'),share:Math.min(100,amount('Share'))/100,debt:amount('Debt'),
+   growth:Math.max(-50,Math.min(50,Number(field('Growth'))||0))/100,
+   flow:(Number(field('Rent'))||0)-amount('Costs'),sell,saleAge:amount('Age'),
+   payoff:field('Payoff')===''?amount('Debt'):amount('Payoff'),fee:Math.min(100,amount('Fee'))/100,
+   tax:amount('Tax'),replacement:amount('Replacement')};
+ });
+}
+function propertyProceeds(property,input){
+ const years=property.saleAge-input.age;
+ const value=property.value*(1+property.growth)**years;
+ const cost=(property.tax+property.replacement)*(1+input.inflation)**years;
+ return property.share*(value*(1-property.fee)-property.payoff-cost);
+}
+function renderPropertySummary(input){
+ const equity=input.properties.reduce((sum,p)=>sum+(p.value-p.debt)*p.share,0);
+ const liquid=input.wealth+input.cash;
+ $('propertySummary').innerHTML=row('Retirement savings and cash today',liquid)+row('Property equity today',equity)+
+  row('Total entered net worth today',liquid+equity)+
+  (input.properties.length?comparisonTable(['Asset','Equity today','Annual net cash flow while held','Sale cash at entered age'],
+   input.properties.map((p,i)=>[p.type+' '+(i+1),money((p.value-p.debt)*p.share),money(p.flow*p.share),
+    p.sell?'Age '+p.saleAge+' · '+money(propertyProceeds(p,input)):'Holding'])):'')+
+  '<p class="hint">Net worth includes property equity. The portfolio uses net sale cash only at the entered age. Sale cash is in future dollars. Enter post-sale housing costs in base spending if they will continue.</p>';
+}
+
+function fullRetirementAge(birthYear){
+ if(birthYear>=1960) return 67;
+ return 66+Math.max(0,birthYear-1954)/6;
+}
+function claimFactor(age,fra){
+ const months=Math.round((Math.min(70,age)-fra)*12);
+ if(months>=0) return 1+months*(2/3)/100;
+ const early=-months;
+ return 1-(Math.min(early,36)*(5/9)+Math.max(0,early-36)*(5/12))/100;
+}
+function renderSocialSecurity(input,claimAge,fra,retireAge,endAge,base,stress){
+ const social=input.benefits[0];
+ if(!social.amount){
+  $('ssGuide').textContent='Enter an estimated Social Security benefit to compare claiming ages.';
+  return;
+ }
+ const fullAmount=social.amount/claimFactor(claimAge,fra);
+ const ageLabel=age=>Number.isInteger(age)?String(age):Math.floor(age)+' years '+Math.round((age%1)*12)+' months';
+ const rows=[62,fra,70].map(age=>{
+  const amount=fullAmount*claimFactor(age,fra);
+  const start=Math.ceil(age);
+  const alt={...input,benefits:[{...social,start,amount},...input.benefits.slice(1)]};
+  const projection=retirementProjection(alt,retireAge,endAge);
+  const bridge=projection.spending.filter(y=>y.age<start).reduce((sum,y)=>sum+Math.max(0,y.realDraw),0);
+  return [ageLabel(age)+(age===fra?' · Full':''),money(amount/12),money(bridge)];
+ });
+ const applies=stress.spending.find(year=>year.socialFactor<1&&year.scheduledSocial>0);
+ const next=applies?'<p class="note">At age '+applies.age+', the first modeled year with a reduced payment, the stress scenario changes annual Social Security from '+
+  money(applies.scheduledSocial)+' to '+money(applies.benefits[0])+' in future dollars.</p>':'';
+ $('ssGuide').innerHTML=comparisonTable(['Claim age','Monthly benefit today','Portfolio draw before claiming (total, today)'],rows)+
+  '<p class="hint">Compares the same earnings record. The highest monthly check is generally at 70. Use a separate SSA estimate for each scenario if your earnings or eligibility would change. Annual cash flow rounds a fractional claiming age up to the next whole year. The draw column adds annual spending gaps before Social Security begins, before applying any property sale proceeds. The stress year is mapped using your current age and calendar year.</p>'+next+
+  '<p class="hint">Baseline savings '+(base.realGap<0?'gap ':'surplus ')+money(Math.abs(base.realGap))+
+  ' · Stress scenario '+(stress.realGap<0?'gap ':'surplus ')+(Number.isFinite(stress.realGap)?money(Math.abs(stress.realGap)):'cannot be funded under these assumptions')+' in today’s dollars.</p>';
+}
+
+function retirementProjection(input,retireAge,endAge,stress=null){
+ const workingYears=retireAge-input.age;
+ const properties=input.properties??[];
+ const sales=new Map();
+ for(const p of properties.filter(p=>p.sell)){
+  sales.set(p.saleAge,(sales.get(p.saleAge)??0)+propertyProceeds(p,input));
+ }
+ let invested=input.wealth,cash=input.cash??0,contributionFactor=0;
+ const points=[{age:input.age,balance:invested+cash}];
+ for(let year=1;year<=workingYears;year++){
+  invested=(invested+(sales.get(input.age+year-1)??0))*(1+input.pre)+input.contribution;
+  cash=cash*(1+(input.cashReturn??0))+(input.cashContribution??0);
+  contributionFactor=contributionFactor*(1+input.pre)+1;
+  points.push({age:input.age+year,balance:Math.max(0,invested+cash)/(1+input.inflation)**year});
+ }
+ const wealth=invested+cash;
+ let balance=Math.max(0,wealth),required=0,netNeed=0,discount=1,depleted=wealth<0?retireAge:null;
+ const spending=[];
+ for(let age=retireAge;age<endAge;age++){
+  const elapsed=age-input.age;
+  const inflation=(1+input.inflation)**elapsed;
+  const benefits=input.benefits.map(b=>age<b.start?0:b.amount*(1+b.inflation)**elapsed);
+  const scheduledSocial=benefits[0]??0;
+  const socialFactor=input.calendarYear+elapsed>=stress?.cutYear?stress.payable:1;
+  benefits[0]=scheduledSocial*socialFactor;
+  const annualSpending=(input.base+input.health+input.taxes)*inflation;
+  const propertyFlow=properties.filter(p=>!p.sell||age<p.saleAge)
+   .reduce((sum,p)=>sum+p.flow*p.share*inflation,0);
+  const draw=Math.max(0,annualSpending-benefits.reduce((sum,x)=>sum+x,0))-propertyFlow;
+  const sale=sales.get(age)??0;
+  if(discount>0) netNeed-=sale/discount;
+  required=Math.max(required,netNeed);
+  if(balance+sale<0&&depleted===null) depleted=age;
+  balance=Math.max(0,balance+sale);
+  const rate=stress&&age-retireAge<stress.years?stress.rate:input.post;
+  discount*=1+rate;
+  if(discount>0) netNeed+=draw/discount;
+  else if(draw>Math.max(0,balance*(1+rate))) netNeed=Infinity;
+  required=Math.max(required,netNeed);
+  const afterReturn=balance*(1+rate);
+  if(draw+0.005>=afterReturn&&draw>0&&depleted===null) depleted=age+1;
+  if(balance>0&&afterReturn===0&&depleted===null) depleted=age+1;
+  balance=Math.max(0,afterReturn-draw);
+  points.push({age:age+1,balance:balance/(1+input.inflation)**(elapsed+1)});
+  spending.push({age,benefits,draw,realDraw:Math.max(0,draw)/inflation,propertyFlow,scheduledSocial,socialFactor});
+ }
+ const realGap=(wealth-required)/(1+input.inflation)**workingYears;
+ return {wealth,required,balance,depleted,points,spending,realGap,
+  extraMonthly:contributionFactor>0?Math.max(0,required-wealth)/contributionFactor/12:null};
+}
+
+function renderRetirementChart(base,stress){
+ $('retChart').innerHTML='<div class="chart-key"><strong>━ Baseline</strong><strong class="stress-key">┄ Stress scenario</strong></div>'+
+  '<canvas class="scenario-chart" id="balanceChart" width="800" height="420" role="img" aria-label="Portfolio balance by age in today’s dollars"></canvas>'+
+  '<p class="hint">Today’s dollars. '+[base,stress].map((p,i)=>(i?'Stress scenario':'Baseline')+
+  (p.depleted===null?' covers modeled withdrawals through age '+p.points.at(-1).age:' reaches $0 around age '+p.depleted))
+  .join('. ')+'.</p><details><summary>View chart data by age</summary>'+
+  comparisonTable(['Age','Baseline','Stress scenario'],stress.points.map((point,i)=>
+   [point.age,base.points[i]?money(base.points[i].balance):'—',money(point.balance)]))+'</details>';
+ const canvas=$('balanceChart');
+ const ctx=canvas.getContext('2d');
+ if(!ctx) return;
+ const left=130,right=765,top=24,bottom=355;
+ const minAge=stress.points[0].age,maxAge=stress.points.at(-1).age;
+ const maxBalance=Math.max(1,...[...base.points,...stress.points].map(p=>p.balance));
+ const x=age=>left+(age-minAge)/(maxAge-minAge)*(right-left);
+ const y=balance=>bottom-balance/maxBalance*(bottom-top);
+ const compact=new Intl.NumberFormat('en-US',{style:'currency',currency:'USD',notation:'compact',maximumFractionDigits:1});
+ ctx.font='24px system-ui';
+ ctx.fillStyle='#4c6078';
+ for(let i=0;i<=4;i++){
+  const value=maxBalance*i/4, gridY=y(value);
+  ctx.strokeStyle='#dbe5f0';
+  ctx.beginPath();ctx.moveTo(left,gridY);ctx.lineTo(right,gridY);ctx.stroke();
+  ctx.textAlign='right';ctx.fillText(compact.format(value),left-10,gridY+7);
+ }
+ const intervals=Math.min(5,maxAge-minAge);
+ ctx.textAlign='center';
+ for(let i=0;i<=intervals;i++){
+  const age=Math.round(minAge+(maxAge-minAge)*i/intervals);
+  ctx.fillText(age,x(age),bottom+34);
+ }
+ for(const [i,projection] of [base,stress].entries()){
+  ctx.beginPath();ctx.strokeStyle=i?'#5278ac':'#214e83';ctx.lineWidth=i?4:7;
+  ctx.setLineDash(i?[12,9]:[]);
+  projection.points.forEach((point,index)=>index?ctx.lineTo(x(point.age),y(point.balance)):
+   ctx.moveTo(x(point.age),y(point.balance)));
+  ctx.stroke();
+ }
+}
+
+function retirement(){
+ const signed=(id,min,max)=>Math.max(min,Math.min(max,Number($(id).value)||0))/100;
+ const inflation=signed('inflation',0,30);
+ const benefit=(amount,age,setting,cola)=>({
+  amount:num(amount),start:num(age),
+  inflation:{general:inflation,none:0,custom:signed(cola,0,30)}[$(setting).value]
+ });
+ const age=num('age'), calendarYear=new Date().getFullYear();
+ const birthYear=$('birthYear').value===''?calendarYear-age:num('birthYear');
+ const fra=fullRetirementAge(birthYear), claimAge=num('ssAge');
+ const fullMode=$('ssMode').value==='full';
+ $('ssAmountLabel').textContent=fullMode?'Annual Social Security at full retirement age ($)':'Annual Social Security at the chosen claiming age ($)';
+ const accounts=$('assetMode').value==='accounts';
+ $('assetTotal').hidden=accounts;
+ $('assetAccounts').hidden=!accounts;
+ const accountData=retirementAccounts();
+ const pct=(id,min,max)=>signed(id,min,max);
+ const input={age,calendarYear,wealth:accounts?accountData.wealth:num('wealth'),
+  contribution:accounts?accountData.contribution:num('contrib'),
+  cash:accounts?accountData.cash:0,cashContribution:accounts?accountData.cashContribution:0,
+  cashReturn:pct('cashReturn',-50,50),properties:readProperties(),base:num('spend'),
+  health:num('health'),taxes:num('retTaxes'),inflation,pre:signed('return',-50,50),post:signed('postreturn',-50,50),
+  benefits:[benefit('ss','ssAge','ssInflation','ssCola'),benefit('pension','pensionAge','pensionInflation','pensionCola'),benefit('foreignPension','foreignAge','foreignInflation','foreignCola')]};
+ const social=input.benefits[0];
+ if(fullMode) social.amount*=claimFactor(claimAge,fra);
+ const retireAge=num('retage'),endAge=num('endage');
+ for(const [setting,cola] of [['ssInflation','ssCola'],['pensionInflation','pensionCola'],['foreignInflation','foreignCola']]){
+  $(cola).disabled=$(setting).value!=='custom';
+ }
+ const ages=[input.age,retireAge,endAge];
+ if(ages.some(age=>!Number.isInteger(age)||age<18||age>120)||retireAge<input.age||endAge<=retireAge||
+    input.benefits.some(b=>b.amount>0&&(!Number.isInteger(b.start)||b.start<18||b.start>120))||
+    (num('ss')>0&&(!Number.isInteger(claimAge)||claimAge<62||(fullMode&&claimAge>70)))||
+    ($('birthYear').value!==''&&(!Number.isInteger(birthYear)||birthYear>calendarYear||birthYear<1943))||
+    input.properties.some(p=>p.sell&&(!Number.isInteger(p.saleAge)||p.saleAge<age||p.saleAge>160))){
+  $('realLabel').textContent='Projected savings gap or surplus in today’s dollars';
+  $('realGap').textContent='—';
+  for(const id of ['retRows','retDelay','retChart','retBridge','futureRows','ssGuide','propertySummary']) $(id).innerHTML='';
+  $('retNote').className='note warn';
+  $('retNote').textContent='Use whole ages from 18 through 120 for the planning timeline. Retirement can start at your current age and must start before the plan ends. Enter valid benefit and sale ages. Use claiming ages 62–70 with a full-retirement-age Social Security estimate.';
+  return;
+ }
+ const base=retirementProjection(input,retireAge,endAge);
+ const stress=retirementProjection(input,retireAge,endAge+Math.min(40,Math.floor(num('stressExtra'))),
+  {rate:signed('stressReturn',-100,100),years:Math.min(80,Math.floor(num('stressYears'))),
+   payable:signed('ssPayable',0,100),cutYear:$('ssCutYear').value===''?2032:Math.floor(num('ssCutYear'))});
+ renderSocialSecurity(input,claimAge,fra,retireAge,endAge,base,stress);
+ renderPropertySummary(input);
+ const gapText=gap=>money(Math.abs(gap))+(gap<0?' gap':gap>0?' surplus':' gap');
+ $('realLabel').textContent='At retirement, in today’s dollars';
+ $('realGap').textContent=gapText(base.realGap);
+ $('retNote').className='note'+(base.realGap<0?' warn':'');
+ $('retNote').textContent=base.realGap>=0?'Projected savings cover the modeled baseline spending.':
+  base.extraMonthly===null?'Baseline has a savings gap and retirement begins immediately.':
+  'Estimated additional saving: '+money(base.extraMonthly)+'/month before retirement. The estimate uses 12 equal installments held for the end-of-year contribution.';
+ $('retRows').innerHTML=row('Annual base spending today',input.base)+row('Annual healthcare today',input.health)+
+  row('Annual estimated taxes today',input.taxes)+row('Total annual spending today',input.base+input.health+input.taxes);
+ const delay=Math.min(40,Math.floor(num('delay'))),laterAge=retireAge+delay;
+ if(delay&&laterAge<endAge){
+  const later=retirementProjection(input,laterAge,endAge);
+  $('retDelay').innerHTML='<p class="note">Retire at '+laterAge+' → '+gapText(later.realGap)+
+   ' in today’s dollars ('+money(Math.abs(later.realGap-base.realGap))+
+   (later.realGap>=base.realGap?' improvement':' lower')+'). Benefit start ages and the planning end age stay fixed. Pre-retirement benefits are excluded.</p>';
+ }else{
+  $('retDelay').textContent=delay?'Choose a delay that keeps retirement before the planning end age.':'';
+ }
+ const starts=[retireAge,...input.benefits.filter(b=>b.amount>0&&b.start>retireAge&&b.start<endAge).map(b=>b.start),
+  ...input.properties.filter(p=>p.sell&&p.saleAge>retireAge&&p.saleAge<endAge).map(p=>p.saleAge)];
+ const boundaries=[...new Set(starts)].sort((a,b)=>a-b);
+ const bridgeRows=boundaries.map((start,i)=>{
+  const end=(boundaries[i+1]??endAge)-1;
+  const years=base.spending.filter(s=>s.age>=start&&s.age<=end);
+  const first=years[0],last=years.at(-1);
+  const benefits=first.benefits.map((amount,index)=>amount>0?['Social Security','Pension','Foreign benefit'][index]:null).filter(Boolean);
+  const range=Math.abs(first.realDraw-last.realDraw)<0.5?money(first.realDraw):money(first.realDraw)+' → '+money(last.realDraw);
+  return [start===end?start:start+'–'+end,benefits.join(' + ')||'None',range];
+ });
+ $('retBridge').innerHTML=comparisonTable(['Ages','Benefits in payment','Annual portfolio draw today'],bridgeRows)+
+  '<p class="hint">Benefits begin in the year of the entered age. Employer pensions and Social Security are modeled as entered. Any benefits above spending are excluded from portfolio deposits.</p>';
+ const first=base.spending[0],growth=(1+inflation)**(retireAge-input.age);
+ $('futureRows').innerHTML=row('Projected portfolio at retirement',base.wealth)+row('Portfolio needed at retirement',base.required)+
+  row('First-year base spending',input.base*growth)+row('First-year healthcare',input.health*growth)+
+  row('First-year taxes',input.taxes*growth)+row('First-year Social Security',first.benefits[0])+
+  row('First-year pension',first.benefits[1])+row('First-year foreign benefit',first.benefits[2])+row('First-year net property cash flow',first.propertyFlow)+row('First-year portfolio draw',Math.max(0,first.draw))+
+  '<div class="row"><span>Initial withdrawal rate</span><span>'+
+  (base.wealth>0?(100*Math.max(0,first.draw)/base.wealth).toFixed(1)+'%':'—')+'</span></div>'+
+  row('Baseline ending balance at age '+endAge,base.balance)+row('Stress ending balance at age '+stress.points.at(-1).age,stress.balance);
+ renderRetirementChart(base,stress);
+}
+
+function mode(which){$('young').classList.toggle('hidden',which!=='young');$('ret').classList.toggle('hidden',which!=='ret');$('youngTab').classList.toggle('active',which==='young');$('retTab').classList.toggle('active',which==='ret')} $('youngTab').addEventListener('click',()=>mode('young'));$('retTab').addEventListener('click',()=>mode('ret'));const incomeTypes=['Freelance / side hustle','Rental property','Stock sale','Dividends','Interest / other'];let count=0;function addIncome(){if(count>=12)return;count++;let card=document.createElement('div');card.className='extra-card';card.innerHTML=`<div class="grid2"><label>Income type<select class="incomeType smallselect"><option value="freelance">Freelance / side hustle</option><option value="rental">Rental property</option><option value="stocks">Stock sale</option><option value="dividends">Dividends</option><option value="interest">Interest / other</option></select></label><label>Frequency<select class="frequency smallselect"><option value="once">One-time this month</option><option value="monthly">Monthly recurring</option></select></label></div><div class="grid2"><label>Amount ($) <input class="amount" type="number" min="0" value="0"></label><label>Expenses or cost basis ($)<input class="expense" type="number" min="0" value="0"><input class="cost hidden" type="number" min="0" value="0"></label></div><div class="grid2"><label>Income location / state of source<select class="place smallselect"><option value="same">Same as residence</option><option value="Alabama" >Alabama</option><option value="Alaska" >Alaska</option><option value="Arizona" >Arizona</option><option value="Arkansas" >Arkansas</option><option value="California" >California</option><option value="Colorado" >Colorado</option><option value="Connecticut" >Connecticut</option><option value="Delaware" >Delaware</option><option value="Florida" >Florida</option><option value="Georgia" >Georgia</option><option value="Hawaii" >Hawaii</option><option value="Idaho" >Idaho</option><option value="Illinois" >Illinois</option><option value="Indiana" >Indiana</option><option value="Iowa" >Iowa</option><option value="Kansas" >Kansas</option><option value="Kentucky" >Kentucky</option><option value="Louisiana" >Louisiana</option><option value="Maine" >Maine</option><option value="Maryland" >Maryland</option><option value="Massachusetts" >Massachusetts</option><option value="Michigan" >Michigan</option><option value="Minnesota" >Minnesota</option><option value="Mississippi" >Mississippi</option><option value="Missouri" >Missouri</option><option value="Montana" >Montana</option><option value="Nebraska" >Nebraska</option><option value="Nevada" >Nevada</option><option value="New Hampshire" >New Hampshire</option><option value="New Jersey" >New Jersey</option><option value="New Mexico" >New Mexico</option><option value="New York" >New York</option><option value="North Carolina" >North Carolina</option><option value="North Dakota" >North Dakota</option><option value="Ohio" >Ohio</option><option value="Oklahoma" >Oklahoma</option><option value="Oregon" >Oregon</option><option value="Pennsylvania" >Pennsylvania</option><option value="Rhode Island" >Rhode Island</option><option value="South Carolina" >South Carolina</option><option value="South Dakota" >South Dakota</option><option value="Tennessee" >Tennessee</option><option value="Texas" >Texas</option><option value="Utah" >Utah</option><option value="Vermont" >Vermont</option><option value="Virginia" >Virginia</option><option value="Washington" >Washington</option><option value="West Virginia" >West Virginia</option><option value="Wisconsin" >Wisconsin</option><option value="Wyoming" >Wyoming</option><option value="District of Columbia">District of Columbia</option></select></label><label>Investment tax treatment<select class="holding smallselect"><option value="short">Short-term / ordinary</option><option value="long">Long-term / qualified</option></select></label></div><label class="incomeOwner">Self-employment owner<select class="owner smallselect"><option value="0">Primary filer</option><option value="1">Spouse on joint return</option></select></label><p class="hint incomeHelp">Enter gross business revenue before expenses.</p><button type="button" class="remove">Remove source</button>`;card.querySelector('.remove').onclick=()=>{card.remove();count--;young()};let change=()=>{let t=card.querySelector('.incomeType').value,exp=card.querySelector('.expense'),cost=card.querySelector('.cost');card.querySelector('.frequency').disabled=t==='stocks';if(t==='stocks')card.querySelector('.frequency').value='once';exp.classList.toggle('hidden',t==='stocks');cost.classList.toggle('hidden',t!=='stocks');card.querySelector('.incomeHelp').textContent=t==='stocks'?'Amount = sale proceeds. Cost basis = original purchase cost.':t==='rental'?'Amount = rental receipts. Expenses exclude principal; rental depreciation/passive losses are NOT modeled.':t==='freelance'?'Amount = gross business revenue; expenses = deductible costs.': 'Amount = cash received.';young()};card.addEventListener('input',young);card.addEventListener('change',change);$('incomeSources').appendChild(card);change()};$('addIncome').addEventListener('click',addIncome);
+$('filing').addEventListener('change',()=>{$('spouseSection').classList.toggle('hidden',$('filing').value!=='joint')});$('deduction').addEventListener('change',()=>{$('itemizedWrap').classList.toggle('hidden',$('deduction').value!=='itemized');young()});document.querySelectorAll('input,select').forEach(x=>{x.addEventListener('input',()=>{young();retirement()});x.addEventListener('change',()=>{young();retirement()})});$('taxJump').addEventListener('click',()=>{
+  const panel=$('taxInputs');
+  panel.open=true;
+  panel.scrollIntoView({block:'start'});
+  panel.querySelector('summary').focus({preventScroll:true});
+});
+$('saveBaseline').addEventListener('click',()=>{baseline=budgetSnapshot;renderComparison()});
+$('clearBaseline').addEventListener('click',()=>{baseline=null;renderComparison()});
+setupRetirementAssets();young();retirement();</script></html>
